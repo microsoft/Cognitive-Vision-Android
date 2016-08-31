@@ -51,12 +51,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VisionServiceRestClient implements VisionServiceClient {
-    private static final String serviceHost = "https://api.projectoxford.ai/vision/v1.0";
-    private WebServiceRequest restCall = null;
+    private static final String DEFAULT_API_ROOT = "https://api.projectoxford.ai/vision/v1.0";
+    private final String apiRoot;
+    private final WebServiceRequest restCall;
     private Gson gson = new Gson();
 
     public VisionServiceRestClient(String subscriptKey) {
+        this(subscriptKey, DEFAULT_API_ROOT);
+    }
+
+    public VisionServiceRestClient(String subscriptKey, String apiRoot) {
         this.restCall = new WebServiceRequest(subscriptKey);
+        this.apiRoot = apiRoot.replaceAll("/$", "");
     }
 
     @Override
@@ -65,7 +71,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         AppendParams(params, "visualFeatures", visualFeatures);
         AppendParams(params, "details", details);
 
-        String path = serviceHost + "/analyze";
+        String path = apiRoot + "/analyze";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -82,7 +88,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         Map<String, Object> params = new HashMap<>();
         AppendParams(params, "visualFeatures", visualFeatures);
         AppendParams(params, "details", details);
-        String path = serviceHost + "/analyze";
+        String path = apiRoot + "/analyze";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -103,7 +109,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
     @Override
     public AnalysisInDomainResult analyzeImageInDomain(String url, String model) throws VisionServiceException {
         Map<String, Object> params = new HashMap<>();
-        String path = serviceHost + "/models/" + model + "/analyze";
+        String path = apiRoot + "/models/" + model + "/analyze";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -123,7 +129,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
     @Override
     public AnalysisInDomainResult analyzeImageInDomain(InputStream stream, String model) throws VisionServiceException, IOException {
         Map<String, Object> params = new HashMap<>();
-        String path = serviceHost + "/models/" + model + "/analyze";
+        String path = apiRoot + "/models/" + model + "/analyze";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -140,7 +146,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
     public AnalysisResult describe(String url, int maxCandidates) throws VisionServiceException{
         Map<String, Object> params = new HashMap<>();
         params.put("maxCandidates", maxCandidates);
-        String path = serviceHost + "/describe";
+        String path = apiRoot + "/describe";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -156,7 +162,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
     public AnalysisResult describe(InputStream stream, int maxCandidates) throws VisionServiceException, IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("maxCandidates", maxCandidates);
-        String path = serviceHost + "/describe";
+        String path = apiRoot + "/describe";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -172,7 +178,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
     @Override
     public ModelResult listModels() throws VisionServiceException{
         Map<String, Object> params = new HashMap<>();
-        String path = serviceHost + "/models";
+        String path = apiRoot + "/models";
         String uri = WebServiceRequest.getUrl(path, params);
 
         String json = (String) this.restCall.request(uri, "GET", params, null, false);
@@ -186,7 +192,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         Map<String, Object> params = new HashMap<>();
         params.put("language", languageCode);
         params.put("detectOrientation", detectOrientation);
-        String path = serviceHost + "/ocr";
+        String path = apiRoot + "/ocr";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -202,7 +208,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         Map<String, Object> params = new HashMap<>();
         params.put("language", languageCode);
         params.put("detectOrientation", detectOrientation);
-        String path = serviceHost + "/ocr";
+        String path = apiRoot + "/ocr";
         String uri = WebServiceRequest.getUrl(path, params);
 
         byte[] data = IOUtils.toByteArray(stream);
@@ -219,7 +225,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         params.put("width", width);
         params.put("height", height);
         params.put("smartCropping", smartCropping);
-        String path = serviceHost + "/generateThumbnails";
+        String path = apiRoot + "/generateThumbnails";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -240,7 +246,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         params.put("width", width);
         params.put("height", height);
         params.put("smartCropping", smartCropping);
-        String path = serviceHost + "/generateThumbnails";
+        String path = apiRoot + "/generateThumbnails";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
