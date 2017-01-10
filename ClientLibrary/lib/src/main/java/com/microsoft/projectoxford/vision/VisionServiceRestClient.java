@@ -51,7 +51,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VisionServiceRestClient implements VisionServiceClient {
-    private static final String DEFAULT_API_ROOT = "https://api.projectoxford.ai/vision/v1.0";
+    private static final String DEFAULT_API_ROOT = "https://westus.api.cognitive.microsoft.com/vision/v1.0";
     private final String apiRoot;
     private final WebServiceRequest restCall;
     private Gson gson = new Gson();
