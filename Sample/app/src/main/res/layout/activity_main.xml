@@ -45,6 +45,14 @@
             android:onClick="activityRecognize" />
 
         <Button
+            android:layout_width="233dp"
+            android:layout_height="wrap_content"
+            android:text="Handwriting Recognize"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:onClick="activityHandwriting" />
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thumbnail Image"

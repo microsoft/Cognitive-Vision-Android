@@ -143,7 +143,11 @@ public class WebServiceRequest {
                 }else {
                     return response.getEntity().getContent();
                 }
-            } else {
+            }else if(statusCode==202)
+            {
+                return response.getFirstHeader("Operation-Location").getValue();
+            }
+            else {
                 throw new Exception("Error executing POST request! Received error code: " + response.getStatusLine().getStatusCode());
             }
         } catch (Exception e) {

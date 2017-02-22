@@ -34,6 +34,8 @@ package com.microsoft.projectoxford.vision;
 
 import com.microsoft.projectoxford.vision.contract.AnalysisInDomainResult;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
+import com.microsoft.projectoxford.vision.contract.HandwritingOCROperationResult;
+import com.microsoft.projectoxford.vision.contract.HandwritingOCROperation;
 import com.microsoft.projectoxford.vision.contract.Model;
 import com.microsoft.projectoxford.vision.contract.ModelResult;
 import com.microsoft.projectoxford.vision.contract.OCR;
@@ -64,6 +66,12 @@ public interface VisionServiceClient {
     public OCR recognizeText(String url, String languageCode, boolean detectOrientation) throws VisionServiceException;
 
     public OCR recognizeText(InputStream stream, String languageCode, boolean detectOrientation) throws VisionServiceException, IOException;
+
+    public HandwritingOCROperation CreateHandwritingOCROperationAsync(String url) throws  VisionServiceException;
+
+    public HandwritingOCROperation CreateHandwritingOCROperationAsync(InputStream stream) throws VisionServiceException, IOException;
+
+    public HandwritingOCROperationResult GetHandwritingOCROperationResultAsync(String uri) throws  VisionServiceException;
 
     public byte[] getThumbnail(int width, int height, boolean smartCropping, String url) throws VisionServiceException, IOException;
 
