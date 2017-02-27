@@ -224,7 +224,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         params.put("width", width);
         params.put("height", height);
         params.put("smartCropping", smartCropping);
-        String path = apiRoot + "/generateThumbnails";
+        String path = apiRoot + "/generateThumbnail";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -245,7 +245,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         params.put("width", width);
         params.put("height", height);
         params.put("smartCropping", smartCropping);
-        String path = apiRoot + "/generateThumbnails";
+        String path = apiRoot + "/generateThumbnail";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
