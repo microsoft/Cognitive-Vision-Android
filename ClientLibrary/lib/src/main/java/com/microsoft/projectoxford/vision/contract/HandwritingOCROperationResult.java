@@ -32,9 +32,10 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
+//result of recognition operation.
 public class HandwritingOCROperationResult {
 
-    public String status;
+    public String status; //status of recogniton result
 
-    public HandwritingOCRResult recognitionResult;
+    public HandwritingOCRResult recognitionResult; //content of recognition result
 }

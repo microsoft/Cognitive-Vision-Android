@@ -35,9 +35,10 @@ package com.microsoft.projectoxford.vision.contract;
 import java.util.List;
 public class HandwritingOCRLine {
 
-    public List<HandwritingOCRWord> Words;
+    public List<HandwritingOCRWord> words; //words in the line
 
-    public String Text;
+    public String text; //text of text line
 
-    public int[] BoundingBox;
+    public int[] boundingBox; //bouding box for whole text line, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
+
 }

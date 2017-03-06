@@ -32,6 +32,7 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
+//Opreation would be return after request text recognition API, using the operation URL to get recognition result.
 public class HandwritingOCROperation {
 
     public HandwritingOCROperation(String url)
@@ -42,7 +43,7 @@ public class HandwritingOCROperation {
     public String Url()
     {
         return _url;
-    }
+    } //Url of operation
 
     private String _url;
 }

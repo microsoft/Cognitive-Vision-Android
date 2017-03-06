@@ -34,7 +34,7 @@ package com.microsoft.projectoxford.vision.contract;
 
 public class HandwritingOCRWord {
 
-    public String Text;
+    public String text; //text of the world
 
-    public int[] BoundingBox;
+    public int[] boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
 }

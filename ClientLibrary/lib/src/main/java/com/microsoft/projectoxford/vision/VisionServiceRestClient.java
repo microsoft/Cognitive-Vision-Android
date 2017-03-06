@@ -53,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VisionServiceRestClient implements VisionServiceClient {
-    private static final String DEFAULT_API_ROOT = "https://ocr.azure-api.net/vision/v1.0";
+    private static final String DEFAULT_API_ROOT = "https://westus.api.cognitive.microsoft.com/vision/v1.0";
     private final String apiRoot;
     private final WebServiceRequest restCall;
     private Gson gson = new Gson();
@@ -227,7 +227,6 @@ public class VisionServiceRestClient implements VisionServiceClient {
         String path = apiRoot + "/RecognizeText?handwriting=true";
         String uri = WebServiceRequest.getUrl(path, params);
 
-        params.clear();
         params.put("url", url);
         String operationUrl = (String) this.restCall.request(uri, "POST", params, null, false);
         HandwritingOCROperation HandwrittenOCR = new HandwritingOCROperation(operationUrl);

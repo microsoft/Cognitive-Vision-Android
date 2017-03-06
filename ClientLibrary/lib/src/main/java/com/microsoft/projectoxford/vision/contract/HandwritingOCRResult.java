@@ -35,5 +35,6 @@ package com.microsoft.projectoxford.vision.contract;
 import java.util.List;
 public class HandwritingOCRResult {
 
-    public List<HandwritingOCRLine> Lines;
+    public List<HandwritingOCRLine> lines; //lines in recognition result
+
 }

@@ -52,13 +52,7 @@ import com.microsoft.projectoxford.vision.VisionServiceRestClient;
 import com.microsoft.projectoxford.vision.contract.HandwritingOCRLine;
 import com.microsoft.projectoxford.vision.contract.HandwritingOCROperation;
 import com.microsoft.projectoxford.vision.contract.HandwritingOCROperationResult;
-import com.microsoft.projectoxford.vision.contract.HandwritingOCRResult;
 import com.microsoft.projectoxford.vision.contract.HandwritingOCRWord;
-import com.microsoft.projectoxford.vision.contract.LanguageCodes;
-import com.microsoft.projectoxford.vision.contract.Line;
-import com.microsoft.projectoxford.vision.contract.OCR;
-import com.microsoft.projectoxford.vision.contract.Region;
-import com.microsoft.projectoxford.vision.contract.Word;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 import com.microsoft.projectoxford.visionsample.helper.ImageHelper;
 
@@ -88,7 +82,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_handwriting_recognize);
+        setContentView(R.layout.activity_recognize_handwriting);
 
         if (client == null) {
             client = new VisionServiceRestClient(getString(R.string.subscription_key));
@@ -179,14 +173,16 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray());
 
+        //post image and got operation from API
         HandwritingOCROperation operation = this.client.CreateHandwritingOCROperationAsync(inputStream);
 
         HandwritingOCROperationResult operationResult;
+        //try to get recognition result until it finished.
         do {
-            Thread.sleep(6000);
+            Thread.sleep(1000);
             operationResult = this.client.GetHandwritingOCROperationResultAsync(operation.Url());
         }
-        while (!operationResult.status.equals("Succeeded") && !operationResult.status.equals("Failed"));
+        while (operationResult.status.equals("NotStarted") || operationResult.status.equals("Running"));
         String result = gson.toJson(operationResult);
         Log.d("result", result);
 
@@ -215,7 +211,6 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         protected void onPostExecute(String data) {
             super.onPostExecute(data);
             // Display based on error existence
-
             if (e != null) {
                 mEditText.setText("Error: " + e.getMessage());
                 this.e = null;
@@ -224,12 +219,13 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                 HandwritingOCROperationResult r = gson.fromJson(data, HandwritingOCROperationResult.class);
 
                 String result = "";
+                //if recognition result status is failed. display failed
                 if (r.status.equals("Failed")) {
-                    result += "Error:Recognition Failed";
+                    result += "Error: Recognition Failed";
                 } else {
-                    for (HandwritingOCRLine line : r.recognitionResult.Lines) {
-                        for (HandwritingOCRWord word : line.Words) {
-                            result += word.Text + " ";
+                    for (HandwritingOCRLine line : r.recognitionResult.lines) {
+                        for (HandwritingOCRWord word : line.words) {
+                            result += word.text + " ";
                         }
                         result += "\n";
                     }
