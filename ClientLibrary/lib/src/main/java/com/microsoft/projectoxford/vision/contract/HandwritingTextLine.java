@@ -33,9 +33,9 @@
 package com.microsoft.projectoxford.vision.contract;
 
 import java.util.List;
-public class HandwritingOCRLine {
+public class HandwritingTextLine {
 
-    public List<HandwritingOCRWord> words; //words in the line
+    public List<HandwritingTextWord> words; //words in the line
 
     public String text; //text of text line
 

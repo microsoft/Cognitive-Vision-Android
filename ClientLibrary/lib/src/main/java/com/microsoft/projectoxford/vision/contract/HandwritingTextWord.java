@@ -32,18 +32,9 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-//Opreation would be return after request text recognition API, using the operation URL to get recognition result.
-public class HandwritingOCROperation {
+public class HandwritingTextWord {
 
-    public HandwritingOCROperation(String url)
-    {
-        _url=url;
-    }
+    public String text; //text of the world
 
-    public String Url()
-    {
-        return _url;
-    } //Url of operation
-
-    private String _url;
+    public int[] boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
 }

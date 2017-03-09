@@ -54,7 +54,7 @@
         </activity>
         <activity
             android:name=".HandwritingRecognizeActivity"
-            android:label="@string/title_activity_Handwriting_recognize"
+            android:label="@string/title_activity_handwriting_recognize"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -32,9 +32,10 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-import java.util.List;
-public class HandwritingOCRResult {
+//result of recognition operation.
+public class HandwritingReconitionOperationResult {
 
-    public List<HandwritingOCRLine> lines; //lines in recognition result
+    public String status; //status of recogniton result
 
+    public HandwritingTextResult recognitionResult; //content of recognition result
 }

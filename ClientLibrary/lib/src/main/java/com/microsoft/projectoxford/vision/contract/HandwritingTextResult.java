@@ -32,9 +32,9 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-public class HandwritingOCRWord {
+import java.util.List;
+public class HandwritingTextResult {
 
-    public String text; //text of the world
+    public List<HandwritingTextLine> lines; //lines in recognition result
 
-    public int[] boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
 }

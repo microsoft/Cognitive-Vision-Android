@@ -32,10 +32,18 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-//result of recognition operation.
-public class HandwritingOCROperationResult {
+//Opreation would be return after request text recognition API, using the operation URL to get recognition result.
+public class HandwritingRecognitionOperation {
 
-    public String status; //status of recogniton result
+    public HandwritingRecognitionOperation(String url)
+    {
+        this.url =url;
+    }
 
-    public HandwritingOCRResult recognitionResult; //content of recognition result
+    public String Url()
+    {
+        return url;
+    } //Url of operation
+
+    private String url;
 }

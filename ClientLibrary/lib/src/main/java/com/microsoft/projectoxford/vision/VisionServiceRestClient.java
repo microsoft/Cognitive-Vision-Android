@@ -37,8 +37,8 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.contract.AnalysisInDomainResult;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
-import com.microsoft.projectoxford.vision.contract.HandwritingOCROperationResult;
-import com.microsoft.projectoxford.vision.contract.HandwritingOCROperation;
+import com.microsoft.projectoxford.vision.contract.HandwritingReconitionOperationResult;
+import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperation;
 import com.microsoft.projectoxford.vision.contract.Model;
 import com.microsoft.projectoxford.vision.contract.ModelResult;
 import com.microsoft.projectoxford.vision.contract.OCR;
@@ -222,20 +222,20 @@ public class VisionServiceRestClient implements VisionServiceClient {
     }
 
     @Override
-    public HandwritingOCROperation CreateHandwritingOCROperationAsync(String url) throws VisionServiceException {
+    public HandwritingRecognitionOperation createHandwritingRecognitionOperationAsync(String url) throws VisionServiceException {
         Map<String, Object> params = new HashMap<>();
         String path = apiRoot + "/RecognizeText?handwriting=true";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.put("url", url);
         String operationUrl = (String) this.restCall.request(uri, "POST", params, null, false);
-        HandwritingOCROperation HandwrittenOCR = new HandwritingOCROperation(operationUrl);
+        HandwritingRecognitionOperation HandwrittenOCR = new HandwritingRecognitionOperation(operationUrl);
 
         return HandwrittenOCR;
     }
 
     @Override
-    public HandwritingOCROperation CreateHandwritingOCROperationAsync(InputStream stream) throws VisionServiceException, IOException {
+    public HandwritingRecognitionOperation createHandwritingRecognitionOperationAsync(InputStream stream) throws VisionServiceException, IOException {
         Map<String, Object> params = new HashMap<>();
         String path = apiRoot + "/RecognizeText?handwriting=true";
         String uri = WebServiceRequest.getUrl(path, params);
@@ -243,15 +243,15 @@ public class VisionServiceRestClient implements VisionServiceClient {
         byte[] data = IOUtils.toByteArray(stream);
         params.put("data", data);
         String operationUrl = (String) this.restCall.request(uri, "POST", params, "application/octet-stream", false);
-        HandwritingOCROperation HandwrittenOCR = new HandwritingOCROperation(operationUrl);
+        HandwritingRecognitionOperation HandwrittenOCR = new HandwritingRecognitionOperation(operationUrl);
 
         return HandwrittenOCR;
     }
 
     @Override
-    public HandwritingOCROperationResult GetHandwritingOCROperationResultAsync(String uri) throws VisionServiceException {
+    public HandwritingReconitionOperationResult getHandwritingRecognitionOperationResultAsync(String uri) throws VisionServiceException {
         String json = (String) this.restCall.request(uri, "GET", null, null, false);
-        HandwritingOCROperationResult HandwrittenOCR = this.gson.fromJson(json, HandwritingOCROperationResult.class);
+        HandwritingReconitionOperationResult HandwrittenOCR = this.gson.fromJson(json, HandwritingReconitionOperationResult.class);
 
         return HandwrittenOCR;
     }

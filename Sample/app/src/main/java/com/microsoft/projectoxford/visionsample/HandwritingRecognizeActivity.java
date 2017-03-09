@@ -49,10 +49,10 @@ import android.widget.ImageView;
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
-import com.microsoft.projectoxford.vision.contract.HandwritingOCRLine;
-import com.microsoft.projectoxford.vision.contract.HandwritingOCROperation;
-import com.microsoft.projectoxford.vision.contract.HandwritingOCROperationResult;
-import com.microsoft.projectoxford.vision.contract.HandwritingOCRWord;
+import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperation;
+import com.microsoft.projectoxford.vision.contract.HandwritingReconitionOperationResult;
+import com.microsoft.projectoxford.vision.contract.HandwritingTextLine;
+import com.microsoft.projectoxford.vision.contract.HandwritingTextWord;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 import com.microsoft.projectoxford.visionsample.helper.ImageHelper;
 
@@ -66,18 +66,21 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
     private static final int REQUEST_SELECT_IMAGE = 0;
 
     // The button to select an image
-    private Button mButtonSelectImage;
+    private Button buttonSelectImage;
 
     // The URI of the image selected to detect.
-    private Uri mImageUri;
+    private Uri imagUrl;
 
     // The image selected to detect.
-    private Bitmap mBitmap;
+    private Bitmap bitmap;
 
     // The edit to show status and result.
-    private EditText mEditText;
+    private EditText editText;
 
     private VisionServiceClient client;
+
+    //max retry times to get operation result
+    private int retryCountThreshold = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +91,8 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
             client = new VisionServiceRestClient(getString(R.string.subscription_key));
         }
 
-        mButtonSelectImage = (Button) findViewById(R.id.buttonSelectImage);
-        mEditText = (EditText) findViewById(R.id.editTextResult);
+        buttonSelectImage = (Button) findViewById(R.id.buttonSelectImage);
+        editText = (EditText) findViewById(R.id.editTextResult);
     }
 
     @Override
@@ -116,7 +119,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
 
     // Called when the "Select Image" button is clicked.
     public void selectImage(View view) {
-        mEditText.setText("");
+        editText.setText("");
 
         Intent intent;
         intent = new Intent(HandwritingRecognizeActivity.this, com.microsoft.projectoxford.visionsample.helper.SelectImageActivity.class);
@@ -131,18 +134,18 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
             case REQUEST_SELECT_IMAGE:
                 if (resultCode == RESULT_OK) {
                     // If image is selected successfully, set the image URI and bitmap.
-                    mImageUri = data.getData();
+                    imagUrl = data.getData();
 
-                    mBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
-                            mImageUri, getContentResolver());
-                    if (mBitmap != null) {
+                    bitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
+                            imagUrl, getContentResolver());
+                    if (bitmap != null) {
                         // Show the image on screen.
                         ImageView imageView = (ImageView) findViewById(R.id.selectedImage);
-                        imageView.setImageBitmap(mBitmap);
+                        imageView.setImageBitmap(bitmap);
 
                         // Add detection log.
-                        Log.d("AnalyzeActivity", "Image: " + mImageUri + " resized to " + mBitmap.getWidth()
-                                + "x" + mBitmap.getHeight());
+                        Log.d("AnalyzeActivity", "Image: " + imagUrl + " resized to " + bitmap.getWidth()
+                                + "x" + bitmap.getHeight());
 
                         doRecognize();
                     }
@@ -155,13 +158,13 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
 
 
     public void doRecognize() {
-        mButtonSelectImage.setEnabled(false);
-        mEditText.setText("Analyzing...");
+        buttonSelectImage.setEnabled(false);
+        editText.setText("Analyzing...");
 
         try {
             new doRequest().execute();
         } catch (Exception e) {
-            mEditText.setText("Error encountered. Exception is: " + e.toString());
+            editText.setText("Error encountered. Exception is: " + e.toString());
         }
     }
 
@@ -169,24 +172,31 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         Gson gson = new Gson();
 
         // Put the image into an input stream for detection.
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray());
+        try(ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
+            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray())) {
+                //post image and got operation from API
+                HandwritingRecognitionOperation operation = this.client.createHandwritingRecognitionOperationAsync(inputStream);
 
-        //post image and got operation from API
-        HandwritingOCROperation operation = this.client.CreateHandwritingOCROperationAsync(inputStream);
+                HandwritingReconitionOperationResult operationResult;
+                //try to get recognition result until it finished.
 
-        HandwritingOCROperationResult operationResult;
-        //try to get recognition result until it finished.
-        do {
-            Thread.sleep(1000);
-            operationResult = this.client.GetHandwritingOCROperationResultAsync(operation.Url());
+                int retryCount = 0;
+                do {
+                    if (retryCount > retryCountThreshold) {
+                        throw new InterruptedException("Can't get result after retry in time.");
+                    }
+                    Thread.sleep(1000);
+                    operationResult = this.client.getHandwritingRecognitionOperationResultAsync(operation.Url());
+                }
+                while (operationResult.status.equals("NotStarted") || operationResult.status.equals("Running"));
+
+                String result = gson.toJson(operationResult);
+                Log.d("result", result);
+                return result;
+            }
         }
-        while (operationResult.status.equals("NotStarted") || operationResult.status.equals("Running"));
-        String result = gson.toJson(operationResult);
-        Log.d("result", result);
 
-        return result;
     }
 
     private class doRequest extends AsyncTask<String, String, String> {
@@ -212,29 +222,29 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
             super.onPostExecute(data);
             // Display based on error existence
             if (e != null) {
-                mEditText.setText("Error: " + e.getMessage());
+                editText.setText("Error: " + e.getMessage());
                 this.e = null;
             } else {
                 Gson gson = new Gson();
-                HandwritingOCROperationResult r = gson.fromJson(data, HandwritingOCROperationResult.class);
+                HandwritingReconitionOperationResult r = gson.fromJson(data, HandwritingReconitionOperationResult.class);
 
-                String result = "";
+                StringBuilder resultBuilder = new StringBuilder();
                 //if recognition result status is failed. display failed
                 if (r.status.equals("Failed")) {
-                    result += "Error: Recognition Failed";
+                    resultBuilder.append("Error: Recognition Failed");
                 } else {
-                    for (HandwritingOCRLine line : r.recognitionResult.lines) {
-                        for (HandwritingOCRWord word : line.words) {
-                            result += word.text + " ";
+                    for (HandwritingTextLine line : r.recognitionResult.lines) {
+                        for (HandwritingTextWord word : line.words) {
+                            resultBuilder.append(word.text+" ");
                         }
-                        result += "\n";
+                        resultBuilder.append("\n");
                     }
-                    result += "\n\n";
+                    resultBuilder.append("\n");
                 }
 
-                mEditText.setText(result);
+                editText.setText(resultBuilder);
             }
-            mButtonSelectImage.setEnabled(true);
+            buttonSelectImage.setEnabled(true);
         }
     }
 }
