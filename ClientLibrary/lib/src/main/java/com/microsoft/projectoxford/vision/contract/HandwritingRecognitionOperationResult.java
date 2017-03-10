@@ -33,9 +33,25 @@
 package com.microsoft.projectoxford.vision.contract;
 
 //result of recognition operation.
-public class HandwritingReconitionOperationResult {
+public class HandwritingRecognitionOperationResult {
 
-    public String status; //status of recogniton result
+    private String status; //status of recogniton result
 
-    public HandwritingTextResult recognitionResult; //content of recognition result
+    private HandwritingTextResult recognitionResult; //content of recognition result
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public HandwritingTextResult getRecognitionResult() {
+        return recognitionResult;
+    }
+
+    public void setRecognitionResult(HandwritingTextResult recognitionResult) {
+        this.recognitionResult = recognitionResult;
+    }
 }

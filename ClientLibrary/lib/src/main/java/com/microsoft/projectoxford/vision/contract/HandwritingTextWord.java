@@ -32,9 +32,27 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
+import java.util.ArrayList;
+
 public class HandwritingTextWord {
 
-    public String text; //text of the world
+    private String text; //text of the world
 
-    public int[] boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
+    private ArrayList<Integer> boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ArrayList<Integer> getBoundingBox() {
+        return boundingBox;
+    }
+
+    public void setBoundingBox(ArrayList<Integer> boundingBox) {
+        this.boundingBox = boundingBox;
+    }
 }

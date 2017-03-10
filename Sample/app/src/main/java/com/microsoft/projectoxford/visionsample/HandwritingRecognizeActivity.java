@@ -50,7 +50,7 @@ import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
 import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperation;
-import com.microsoft.projectoxford.vision.contract.HandwritingReconitionOperationResult;
+import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperationResult;
 import com.microsoft.projectoxford.vision.contract.HandwritingTextLine;
 import com.microsoft.projectoxford.vision.contract.HandwritingTextWord;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
@@ -59,6 +59,7 @@ import com.microsoft.projectoxford.visionsample.helper.ImageHelper;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 public class HandwritingRecognizeActivity extends ActionBarActivity {
 
@@ -162,7 +163,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         editText.setText("Analyzing...");
 
         try {
-            new doRequest().execute();
+             new doRequest(this).execute();
         } catch (Exception e) {
             editText.setText("Error encountered. Exception is: " + e.toString());
         }
@@ -178,7 +179,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                 //post image and got operation from API
                 HandwritingRecognitionOperation operation = this.client.createHandwritingRecognitionOperationAsync(inputStream);
 
-                HandwritingReconitionOperationResult operationResult;
+                HandwritingRecognitionOperationResult operationResult;
                 //try to get recognition result until it finished.
 
                 int retryCount = 0;
@@ -189,7 +190,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                     Thread.sleep(1000);
                     operationResult = this.client.getHandwritingRecognitionOperationResultAsync(operation.Url());
                 }
-                while (operationResult.status.equals("NotStarted") || operationResult.status.equals("Running"));
+                while (operationResult.getStatus().equals("NotStarted") || operationResult.getStatus().equals("Running"));
 
                 String result = gson.toJson(operationResult);
                 Log.d("result", result);
@@ -199,17 +200,21 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
 
     }
 
-    private class doRequest extends AsyncTask<String, String, String> {
+    private static class doRequest extends AsyncTask<String, String, String> {
         // Store error message
         private Exception e = null;
 
-        public doRequest() {
+        private WeakReference<HandwritingRecognizeActivity> recognitionActivity;
+        public doRequest(HandwritingRecognizeActivity activity) {
+            recognitionActivity = new WeakReference<HandwritingRecognizeActivity>(activity);
         }
 
         @Override
         protected String doInBackground(String... args) {
             try {
-                return process();
+                if(recognitionActivity.get()!=null) {
+                    return recognitionActivity.get().process();
+                }
             } catch (Exception e) {
                 this.e = e;    // Store error
             }
@@ -220,31 +225,35 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String data) {
             super.onPostExecute(data);
+
+            if(recognitionActivity.get()!=null) {
+                return;
+            }
             // Display based on error existence
             if (e != null) {
-                editText.setText("Error: " + e.getMessage());
+                recognitionActivity.get().editText.setText("Error: " + e.getMessage());
                 this.e = null;
             } else {
                 Gson gson = new Gson();
-                HandwritingReconitionOperationResult r = gson.fromJson(data, HandwritingReconitionOperationResult.class);
+                HandwritingRecognitionOperationResult r = gson.fromJson(data, HandwritingRecognitionOperationResult.class);
 
                 StringBuilder resultBuilder = new StringBuilder();
                 //if recognition result status is failed. display failed
-                if (r.status.equals("Failed")) {
+                if (r.getStatus().equals("Failed")) {
                     resultBuilder.append("Error: Recognition Failed");
                 } else {
-                    for (HandwritingTextLine line : r.recognitionResult.lines) {
-                        for (HandwritingTextWord word : line.words) {
-                            resultBuilder.append(word.text+" ");
+                    for (HandwritingTextLine line : r.getRecognitionResult().getLines()) {
+                        for (HandwritingTextWord word : line.getWords()) {
+                            resultBuilder.append(word.getText()+" ");
                         }
                         resultBuilder.append("\n");
                     }
                     resultBuilder.append("\n");
                 }
 
-                editText.setText(resultBuilder);
+                recognitionActivity.get().editText.setText(resultBuilder);
             }
-            buttonSelectImage.setEnabled(true);
+            recognitionActivity.get().buttonSelectImage.setEnabled(true);
         }
     }
 }

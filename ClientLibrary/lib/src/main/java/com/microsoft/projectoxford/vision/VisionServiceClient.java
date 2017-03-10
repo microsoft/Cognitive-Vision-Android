@@ -34,7 +34,7 @@ package com.microsoft.projectoxford.vision;
 
 import com.microsoft.projectoxford.vision.contract.AnalysisInDomainResult;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
-import com.microsoft.projectoxford.vision.contract.HandwritingReconitionOperationResult;
+import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperationResult;
 import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperation;
 import com.microsoft.projectoxford.vision.contract.Model;
 import com.microsoft.projectoxford.vision.contract.ModelResult;
@@ -71,7 +71,7 @@ public interface VisionServiceClient {
 
     public HandwritingRecognitionOperation createHandwritingRecognitionOperationAsync(InputStream stream) throws VisionServiceException, IOException;
 
-    public HandwritingReconitionOperationResult getHandwritingRecognitionOperationResultAsync(String uri) throws  VisionServiceException;
+    public HandwritingRecognitionOperationResult getHandwritingRecognitionOperationResultAsync(String uri) throws  VisionServiceException;
 
     public byte[] getThumbnail(int width, int height, boolean smartCropping, String url) throws VisionServiceException, IOException;
 

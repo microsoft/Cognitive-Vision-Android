@@ -37,7 +37,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.contract.AnalysisInDomainResult;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
-import com.microsoft.projectoxford.vision.contract.HandwritingReconitionOperationResult;
+import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperationResult;
 import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperation;
 import com.microsoft.projectoxford.vision.contract.Model;
 import com.microsoft.projectoxford.vision.contract.ModelResult;
@@ -249,9 +249,9 @@ public class VisionServiceRestClient implements VisionServiceClient {
     }
 
     @Override
-    public HandwritingReconitionOperationResult getHandwritingRecognitionOperationResultAsync(String uri) throws VisionServiceException {
+    public HandwritingRecognitionOperationResult getHandwritingRecognitionOperationResultAsync(String uri) throws VisionServiceException {
         String json = (String) this.restCall.request(uri, "GET", null, null, false);
-        HandwritingReconitionOperationResult HandwrittenOCR = this.gson.fromJson(json, HandwritingReconitionOperationResult.class);
+        HandwritingRecognitionOperationResult HandwrittenOCR = this.gson.fromJson(json, HandwritingRecognitionOperationResult.class);
 
         return HandwrittenOCR;
     }
