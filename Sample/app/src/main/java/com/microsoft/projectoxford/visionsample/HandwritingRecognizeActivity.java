@@ -163,7 +163,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         editText.setText("Analyzing...");
 
         try {
-             new doRequest(this).execute();
+            new doRequest(this).execute();
         } catch (Exception e) {
             editText.setText("Error encountered. Exception is: " + e.toString());
         }
@@ -173,7 +173,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         Gson gson = new Gson();
 
         // Put the image into an input stream for detection.
-        try(ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
             try (ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray())) {
                 //post image and got operation from API
@@ -195,16 +195,23 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                 String result = gson.toJson(operationResult);
                 Log.d("result", result);
                 return result;
+                
+            } catch (Exception ex) {
+                throw ex;
             }
+        } catch (Exception ex) {
+            throw ex;
         }
 
     }
+
 
     private static class doRequest extends AsyncTask<String, String, String> {
         // Store error message
         private Exception e = null;
 
         private WeakReference<HandwritingRecognizeActivity> recognitionActivity;
+
         public doRequest(HandwritingRecognizeActivity activity) {
             recognitionActivity = new WeakReference<HandwritingRecognizeActivity>(activity);
         }
@@ -212,7 +219,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         @Override
         protected String doInBackground(String... args) {
             try {
-                if(recognitionActivity.get()!=null) {
+                if (recognitionActivity.get() != null) {
                     return recognitionActivity.get().process();
                 }
             } catch (Exception e) {
@@ -226,7 +233,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         protected void onPostExecute(String data) {
             super.onPostExecute(data);
 
-            if(recognitionActivity.get()!=null) {
+            if (recognitionActivity.get() == null) {
                 return;
             }
             // Display based on error existence
@@ -244,7 +251,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                 } else {
                     for (HandwritingTextLine line : r.getRecognitionResult().getLines()) {
                         for (HandwritingTextWord word : line.getWords()) {
-                            resultBuilder.append(word.getText()+" ");
+                            resultBuilder.append(word.getText() + " ");
                         }
                         resultBuilder.append("\n");
                     }
