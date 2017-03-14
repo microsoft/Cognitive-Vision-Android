@@ -32,12 +32,37 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
+import java.util.ArrayList;
 import java.util.List;
+public class HandwritingTextLine {
 
-public class Line {
-    public boolean isVertical;
+    private List<HandwritingTextWord> words; //words in the line
 
-    public List<Word> words;
+    private String text; //text of text line
 
-    public String boundingBox; //e.g. "boundingBox":"27, 66, 72, 18"
-        }
+    private ArrayList<Integer> boundingBox; //bouding box for whole text line, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
+
+    public List<HandwritingTextWord> getWords() {
+        return words;
+    }
+
+    public void setWords(List<HandwritingTextWord> words) {
+        this.words = words;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ArrayList<Integer> getBoundingBox() {
+        return boundingBox;
+    }
+
+    public void setBoundingBox(ArrayList<Integer> boundingBox) {
+        this.boundingBox = boundingBox;
+    }
+}

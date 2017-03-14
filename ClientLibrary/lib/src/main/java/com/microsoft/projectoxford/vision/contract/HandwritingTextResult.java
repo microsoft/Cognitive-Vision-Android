@@ -33,11 +33,15 @@
 package com.microsoft.projectoxford.vision.contract;
 
 import java.util.List;
+public class HandwritingTextResult {
 
-public class Line {
-    public boolean isVertical;
+    private List<HandwritingTextLine> lines; //lines in recognition result
 
-    public List<Word> words;
+    public List<HandwritingTextLine> getLines() {
+        return lines;
+    }
 
-    public String boundingBox; //e.g. "boundingBox":"27, 66, 72, 18"
-        }
+    public void setLines(List<HandwritingTextLine> lines) {
+        this.lines = lines;
+    }
+}

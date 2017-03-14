@@ -12,6 +12,7 @@
     <string name="title_activity_analyze_domain">Analyze Image In Domain</string>
     <string name="title_activity_describe">Describe Image</string>
     <string name="title_activity_recognize">Recognize Text</string>
+    <string name="title_activity_handwriting_recognize">Recognize Handwriting Text</string>
     <string name="title_activity_thumbnail">Thumbnail Image</string>
 
     <!-- Select image activity -->

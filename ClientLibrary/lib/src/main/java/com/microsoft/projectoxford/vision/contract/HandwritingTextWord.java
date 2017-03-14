@@ -32,12 +32,27 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class Line {
-    public boolean isVertical;
+public class HandwritingTextWord {
 
-    public List<Word> words;
+    private String text; //text of the world
 
-    public String boundingBox; //e.g. "boundingBox":"27, 66, 72, 18"
-        }
+    private ArrayList<Integer> boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ArrayList<Integer> getBoundingBox() {
+        return boundingBox;
+    }
+
+    public void setBoundingBox(ArrayList<Integer> boundingBox) {
+        this.boundingBox = boundingBox;
+    }
+}
