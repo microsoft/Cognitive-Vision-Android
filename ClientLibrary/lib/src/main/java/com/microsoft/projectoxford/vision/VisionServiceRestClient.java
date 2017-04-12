@@ -32,8 +32,6 @@
 //
 package com.microsoft.projectoxford.vision;
 
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.contract.AnalysisInDomainResult;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
@@ -46,6 +44,7 @@ import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 import com.microsoft.projectoxford.vision.rest.WebServiceRequest;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -262,7 +261,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         params.put("width", width);
         params.put("height", height);
         params.put("smartCropping", smartCropping);
-        String path = apiRoot + "/generateThumbnails";
+        String path = apiRoot + "/generateThumbnail";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -283,7 +282,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
         params.put("width", width);
         params.put("height", height);
         params.put("smartCropping", smartCropping);
-        String path = apiRoot + "/generateThumbnails";
+        String path = apiRoot + "/generateThumbnail";
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.clear();
@@ -301,7 +300,7 @@ public class VisionServiceRestClient implements VisionServiceClient {
 
     private void AppendParams(Map<String, Object> params, String name, String[] args) {
         if(args != null && args.length > 0) {
-            String features = TextUtils.join(",", args);
+            String features = StringUtils.join(args, ',');
             params.put(name, features);
         }
     }

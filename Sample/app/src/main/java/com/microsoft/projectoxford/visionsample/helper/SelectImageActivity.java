@@ -38,6 +38,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -53,8 +54,11 @@ public class SelectImageActivity extends ActionBarActivity {
     private static final int REQUEST_TAKE_PHOTO = 0;
     private static final int REQUEST_SELECT_IMAGE_IN_ALBUM = 1;
 
-    // The URI of photo taken with camera
+    // The URI of photo taken from gallery
     private Uri mUriPhotoTaken;
+
+    // File of the photo taken with camera
+    private File mFilePhotoTaken;
 
     // When the activity is created, set all the member variables to initial state.
     @Override
@@ -80,9 +84,15 @@ public class SelectImageActivity extends ActionBarActivity {
     // Deal with the result of selection of the photos and faces.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    Intent intent = new Intent();
+                    intent.setData(Uri.fromFile(mFilePhotoTaken));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                break;
             case REQUEST_SELECT_IMAGE_IN_ALBUM:
                 if (resultCode == RESULT_OK) {
                     Uri imageUri;
@@ -96,6 +106,7 @@ public class SelectImageActivity extends ActionBarActivity {
                     setResult(RESULT_OK, intent);
                     finish();
                 }
+
                 break;
             default:
                 break;
@@ -109,10 +120,23 @@ public class SelectImageActivity extends ActionBarActivity {
             // Save the photo taken to a temporary file.
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             try {
-                File file = File.createTempFile("IMG_", ".jpg", storageDir);
-                mUriPhotoTaken = Uri.fromFile(file);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriPhotoTaken);
-                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+                mFilePhotoTaken = File.createTempFile(
+                        "IMG_",  /* prefix */
+                        ".jpg",         /* suffix */
+                        storageDir      /* directory */
+                );
+
+                // Create the File where the photo should go
+                // Continue only if the File was successfully created
+                if (mFilePhotoTaken != null) {
+                    mUriPhotoTaken = FileProvider.getUriForFile(this,
+                            "com.microsoft.projectoxford.visionsample.fileprovider",
+                            mFilePhotoTaken);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriPhotoTaken);
+
+                    // Finally start camera activity
+                    startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+                }
             } catch (IOException e) {
                 setInfo(e.getMessage());
             }
@@ -122,7 +146,7 @@ public class SelectImageActivity extends ActionBarActivity {
     // When the button of "Select a Photo in Album" is pressed.
     public void selectImageInAlbum(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
+        intent.setType("mFilePhotoTaken/*");
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM);
         }
