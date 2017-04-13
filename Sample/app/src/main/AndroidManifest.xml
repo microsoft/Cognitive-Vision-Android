@@ -64,6 +64,14 @@
                 android:value="com.microsoft.projectoxford.visionsample.MainActivity" />
         </activity>
         <activity
+            android:name=".HandwritingRecognizeActivity"
+            android:label="@string/title_activity_handwriting_recognize"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.microsoft.projectoxford.visionsample.MainActivity" />
+        </activity>
+        <activity
             android:name=".ThumbnailActivity"
             android:label="@string/title_activity_thumbnail"
             android:parentActivityName=".MainActivity" >

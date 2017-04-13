@@ -32,12 +32,26 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-import java.util.List;
+//result of recognition operation.
+public class HandwritingRecognitionOperationResult {
 
-public class Line {
-    public boolean isVertical;
+    private String status; //status of recogniton result
 
-    public List<Word> words;
+    private HandwritingTextResult recognitionResult; //content of recognition result
 
-    public String boundingBox; //e.g. "boundingBox":"27, 66, 72, 18"
-        }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public HandwritingTextResult getRecognitionResult() {
+        return recognitionResult;
+    }
+
+    public void setRecognitionResult(HandwritingTextResult recognitionResult) {
+        this.recognitionResult = recognitionResult;
+    }
+}

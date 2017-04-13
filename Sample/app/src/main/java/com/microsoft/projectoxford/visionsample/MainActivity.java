@@ -78,6 +78,12 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void activityHandwriting(View v)
+    {
+        Intent intent =new Intent(this, HandwritingRecognizeActivity.class);
+        startActivity(intent);
+    }
+
     public void activityRecognize(View v) {
         Intent intent = new Intent(this, RecognizeActivity.class);
         startActivity(intent);
