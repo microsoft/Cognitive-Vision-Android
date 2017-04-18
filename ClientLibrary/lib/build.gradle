@@ -13,6 +13,7 @@ android {
 dependencies {
     compile files('supportlibs/commons-io-2.4.jar')
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'commons-lang:commons-lang:2.4'
 }
 
 apply plugin: 'maven'
@@ -27,7 +28,7 @@ group = "com.microsoft.projectoxford"
 // Artifact name is the name of the technology
 archivesBaseName = "vision"
 // Update your version
-version = "1.0.374"
+version = "1.0.393"
 
 uploadArchives {
     repositories {
