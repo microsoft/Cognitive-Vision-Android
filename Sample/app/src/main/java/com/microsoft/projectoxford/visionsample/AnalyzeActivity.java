@@ -86,7 +86,7 @@ public class AnalyzeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_analyze);
 
         if (client==null){
-            client = new VisionServiceRestClient(getString(R.string.subscription_key));
+            client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_region));
         }
 
         mButtonSelectImage = (Button)findViewById(R.id.buttonSelectImage);

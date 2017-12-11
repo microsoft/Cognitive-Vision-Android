@@ -52,18 +52,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VisionServiceRestClient implements VisionServiceClient {
-    private static final String DEFAULT_API_ROOT = "https://westus.api.cognitive.microsoft.com/vision/v1.0";
+    private static final String DEFAULT_REGION = "westus";
+    private static final String DEFAULT_API_ROOT = "https://%s.api.cognitive.microsoft.com/vision/v1.0";
     private final String apiRoot;
     private final WebServiceRequest restCall;
     private Gson gson = new Gson();
 
     public VisionServiceRestClient(String subscriptKey) {
-        this(subscriptKey, DEFAULT_API_ROOT);
+        this(subscriptKey, DEFAULT_REGION);
     }
 
-    public VisionServiceRestClient(String subscriptKey, String apiRoot) {
+    public VisionServiceRestClient(String subscriptKey, String region) {
         this.restCall = new WebServiceRequest(subscriptKey);
-        this.apiRoot = apiRoot.replaceAll("/$", "");
+        this.apiRoot = String.format(DEFAULT_API_ROOT, region).replaceAll("/$", "");
     }
 
     @Override
