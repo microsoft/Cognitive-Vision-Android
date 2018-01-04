@@ -90,7 +90,7 @@ public class AnalyzeInDomainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_analyze_domain);
 
         if (client == null) {
-            client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_region));
+            client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_apiroot));
         }
 
         mButtonSelectImage = (Button)findViewById(R.id.buttonSelectImage);

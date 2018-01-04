@@ -59,12 +59,12 @@ public class VisionServiceRestClient implements VisionServiceClient {
     private Gson gson = new Gson();
 
     public VisionServiceRestClient(String subscriptKey) {
-        this(subscriptKey, DEFAULT_REGION);
+        this(subscriptKey, getApiUrlFromRegion(DEFAULT_REGION));
     }
 
-    public VisionServiceRestClient(String subscriptKey, String region) {
+    public VisionServiceRestClient(String subscriptKey, String apiRoot) {
         this.restCall = new WebServiceRequest(subscriptKey);
-        this.apiRoot = String.format(DEFAULT_API_ROOT, region).replaceAll("/$", "");
+        this.apiRoot = apiRoot.replaceAll("/$", "");
     }
 
     @Override
@@ -304,5 +304,9 @@ public class VisionServiceRestClient implements VisionServiceClient {
             String features = StringUtils.join(args, ',');
             params.put(name, features);
         }
+    }
+
+    private static String getApiUrlFromRegion(String region) {
+        return String.format(DEFAULT_API_ROOT, region).replaceAll("/$", "");
     }
 }

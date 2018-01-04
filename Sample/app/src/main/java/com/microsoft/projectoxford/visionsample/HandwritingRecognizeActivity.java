@@ -89,7 +89,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_recognize_handwriting);
 
         if (client == null) {
-            client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_region));
+            client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_apiroot));
         }
 
         buttonSelectImage = (Button) findViewById(R.id.buttonSelectImage);
