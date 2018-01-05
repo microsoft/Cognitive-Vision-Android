@@ -17,7 +17,7 @@ dependencies {
     // Use the following line to include client library from Maven Central Repository
     // Change the version number from the search.maven.org result
     //
-    compile 'com.microsoft.projectoxford:vision:0.5.0'
+    compile 'com.microsoft.projectoxford:vision:1.0.394'
 
     // Your other Dependencies...
 }
@@ -48,15 +48,13 @@ This sample is an Android application to demonstrate the use of the Computer Vis
 Android OS must be Android 4.1 or higher (API Level 16 or higher)
 
 ### Build the Sample
-1. First, you must obtain a Video API subscription key by [following the instructions on our website](<https://www.microsoft.com/cognitive-services/en-us/sign-up>).
+1. First, you must obtain a Computer Vision API key by [following the instructions on our website](<https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/>).
 
 2.  Start Android Studio and open project from Vision \> Android \> Sample folder.
 
 3.  In Android Studio -\> "Project" panel -\> "Android" view, open file
-    "app/res/values/strings.xml", and find the line
-    "Please\_add\_the\_subscription\_key\_here;". Replace the
-    "Please\_add\_the\_subscription\_key\_here" value with your subscription key
-    string from the first step. If you cannot find the file "strings.xml", it is
+    "app/res/values/strings.xml", and find the keys `subscription_key` and `subscription_apiroot`. Replace the placeholder
+    values with those obtained in step 1 above. If you cannot find the file "strings.xml", it is
     in folder "Sample\app\src\main\res\values\string.xml".
 
 4.  In Android Studio, select menu "Build \> Make Project" to build the sample, and "Run" to launch this sample app.
