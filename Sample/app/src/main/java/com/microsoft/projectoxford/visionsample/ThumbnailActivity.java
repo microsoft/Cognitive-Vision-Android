@@ -83,7 +83,7 @@ public class ThumbnailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_thumbnail);
 
         if (client==null){
-            client = new VisionServiceRestClient(getString(R.string.subscription_key));
+            client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_apiroot));
         }
 
         mButtonSelectImage = (Button)findViewById(R.id.buttonSelectImage);
