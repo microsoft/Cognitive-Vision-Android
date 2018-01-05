@@ -307,6 +307,6 @@ public class VisionServiceRestClient implements VisionServiceClient {
     }
 
     private static String getApiUrlFromRegion(String region) {
-        return String.format(DEFAULT_API_ROOT, region).replaceAll("/$", "");
+        return String.format(DEFAULT_API_ROOT, region);
     }
 }
