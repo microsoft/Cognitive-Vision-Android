@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="Select Image"
                 android:id="@+id/buttonSelectImage"
-                android:onClick="selectImage (RecognizeActivity)"/>
+                android:onClick="selectImage"/>
 
             <ImageView
                 android:id="@+id/selectedImage"
