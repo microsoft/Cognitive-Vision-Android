@@ -32,27 +32,26 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-import java.util.ArrayList;
+//result of recognition operation.
+public class TextRecognitionOperationResult {
 
-public class HandwritingTextWord {
+    private String status; //status of recogniton result
 
-    private String text; //text of the world
+    private TextResult recognitionResult; //content of recognition result
 
-    private ArrayList<Integer> boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
-
-    public String getText() {
-        return text;
+    public String getStatus() {
+        return status;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public ArrayList<Integer> getBoundingBox() {
-        return boundingBox;
+    public TextResult getRecognitionResult() {
+        return recognitionResult;
     }
 
-    public void setBoundingBox(ArrayList<Integer> boundingBox) {
-        this.boundingBox = boundingBox;
+    public void setRecognitionResult(TextResult recognitionResult) {
+        this.recognitionResult = recognitionResult;
     }
 }

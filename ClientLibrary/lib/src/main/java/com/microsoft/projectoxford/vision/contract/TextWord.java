@@ -32,18 +32,27 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-//Opreation would be return after request text recognition API, using the operation URL to get recognition result.
-public class HandwritingRecognitionOperation {
+import java.util.ArrayList;
 
-    public HandwritingRecognitionOperation(String url)
-    {
-        this.url =url;
+public class TextWord {
+
+    private String text; //text of the world
+
+    private ArrayList<Integer> boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
+
+    public String getText() {
+        return text;
     }
 
-    public String Url()
-    {
-        return url;
-    } //Url of operation
+    public void setText(String text) {
+        this.text = text;
+    }
 
-    private String url;
+    public ArrayList<Integer> getBoundingBox() {
+        return boundingBox;
+    }
+
+    public void setBoundingBox(ArrayList<Integer> boundingBox) {
+        this.boundingBox = boundingBox;
+    }
 }

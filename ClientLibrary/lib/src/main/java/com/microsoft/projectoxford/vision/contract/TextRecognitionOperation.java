@@ -32,16 +32,18 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-import java.util.List;
-public class HandwritingTextResult {
+//Opreation would be return after request text recognition API, using the operation URL to get recognition result.
+public class TextRecognitionOperation {
 
-    private List<HandwritingTextLine> lines; //lines in recognition result
-
-    public List<HandwritingTextLine> getLines() {
-        return lines;
+    public TextRecognitionOperation(String url)
+    {
+        this.url =url;
     }
 
-    public void setLines(List<HandwritingTextLine> lines) {
-        this.lines = lines;
-    }
+    public String Url()
+    {
+        return url;
+    } //Url of operation
+
+    private String url;
 }
