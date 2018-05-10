@@ -59,8 +59,6 @@ import com.microsoft.projectoxford.vision.contract.TextRecognitionWord;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 import com.microsoft.projectoxford.visionsample.helper.ImageHelper;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -236,7 +234,7 @@ public class OneOCRRecognizeActivity extends ActionBarActivity {
                 String result = gson.toJson(operationResult);
                 Log.d("result", result);
                 return result;
-
+                
             } catch (Exception ex) {
                 throw ex;
             }
