@@ -51,12 +51,15 @@ import android.widget.RadioGroup;
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionMode;
 import com.microsoft.projectoxford.vision.contract.TextRecognitionOperation;
 import com.microsoft.projectoxford.vision.contract.TextRecognitionOperationResult;
-import com.microsoft.projectoxford.vision.contract.TextLine;
-import com.microsoft.projectoxford.vision.contract.TextWord;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionLine;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionWord;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 import com.microsoft.projectoxford.visionsample.helper.ImageHelper;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -87,7 +90,7 @@ public class OneOCRRecognizeActivity extends ActionBarActivity {
     private Uri imagUrl;
 
     // The mode selected for recognition, default printed.
-    private String mode = "Printed";
+    private TextRecognitionMode mode = TextRecognitionMode.Printed;
 
     // The image selected to detect.
     private Bitmap bitmap;
@@ -123,9 +126,9 @@ public class OneOCRRecognizeActivity extends ActionBarActivity {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             if (checkedId == buttonHandwritten.getId()) {
-                mode = "Handwritten";
+                mode = TextRecognitionMode.Handwritten;
             } else if (checkedId == buttonPrinted.getId()) {
-                mode = "Printed";
+                mode = TextRecognitionMode.Printed;
             }
         }
     };
@@ -214,7 +217,7 @@ public class OneOCRRecognizeActivity extends ActionBarActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
             try (ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray())) {
                 //post image and got operation from API
-                Log.d("Mode", mode);
+                Log.d("Mode", mode.toString());
                 TextRecognitionOperation operation = this.client.createTextRecognitionOperationAsync(inputStream, mode);
 
                 TextRecognitionOperationResult operationResult;
@@ -287,8 +290,8 @@ public class OneOCRRecognizeActivity extends ActionBarActivity {
                 if (r.getStatus().equals("Failed")) {
                     resultBuilder.append("Error: Recognition Failed");
                 } else {
-                    for (TextLine line : r.getRecognitionResult().getLines()) {
-                        for (TextWord word : line.getWords()) {
+                    for (TextRecognitionLine line : r.getRecognitionResult().getLines()) {
+                        for (TextRecognitionWord word : line.getWords()) {
                             resultBuilder.append(word.getText() + " ");
                         }
                         resultBuilder.append("\n");
