@@ -35,6 +35,7 @@ package com.microsoft.projectoxford.vision;
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.contract.AnalysisInDomainResult;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionMode;
 import com.microsoft.projectoxford.vision.contract.TextRecognitionOperationResult;
 import com.microsoft.projectoxford.vision.contract.TextRecognitionOperation;
 import com.microsoft.projectoxford.vision.contract.Model;
@@ -222,9 +223,9 @@ public class VisionServiceRestClient implements VisionServiceClient {
     }
 
     @Override
-    public TextRecognitionOperation createTextRecognitionOperationAsync(String url, String mode) throws VisionServiceException {
+    public TextRecognitionOperation createTextRecognitionOperationAsync(String url, TextRecognitionMode mode) throws VisionServiceException {
         Map<String, Object> params = new HashMap<>();
-        String path = apiRoot + "/RecognizeText?mode=" + mode;
+        String path = apiRoot + "/RecognizeText?mode=" + mode.toString();
         String uri = WebServiceRequest.getUrl(path, params);
 
         params.put("url", url);
@@ -235,9 +236,9 @@ public class VisionServiceRestClient implements VisionServiceClient {
     }
 
     @Override
-    public TextRecognitionOperation createTextRecognitionOperationAsync(InputStream stream, String mode) throws VisionServiceException, IOException {
+    public TextRecognitionOperation createTextRecognitionOperationAsync(InputStream stream, TextRecognitionMode mode) throws VisionServiceException, IOException {
         Map<String, Object> params = new HashMap<>();
-        String path = apiRoot + "/RecognizeText?mode=" + mode;
+        String path = apiRoot + "/RecognizeText?mode=" + mode.toString();
         String uri = WebServiceRequest.getUrl(path, params);
 
         byte[] data = IOUtils.toByteArray(stream);

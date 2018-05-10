@@ -32,26 +32,7 @@
 //
 package com.microsoft.projectoxford.vision.contract;
 
-//result of recognition operation.
-public class TextRecognitionOperationResult {
-
-    private String status; //status of recogniton result
-
-    private TextRecognitionResult recognitionResult; //content of recognition result
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public TextRecognitionResult getRecognitionResult() {
-        return recognitionResult;
-    }
-
-    public void setRecognitionResult(TextRecognitionResult recognitionResult) {
-        this.recognitionResult = recognitionResult;
-    }
+public enum TextRecognitionMode {
+    Handwritten,
+    Printed
 }

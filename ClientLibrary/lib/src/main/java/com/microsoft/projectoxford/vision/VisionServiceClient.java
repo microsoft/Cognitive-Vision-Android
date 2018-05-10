@@ -39,6 +39,7 @@ import com.microsoft.projectoxford.vision.contract.TextRecognitionOperation;
 import com.microsoft.projectoxford.vision.contract.Model;
 import com.microsoft.projectoxford.vision.contract.ModelResult;
 import com.microsoft.projectoxford.vision.contract.OCR;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionMode;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 
 import java.io.IOException;
@@ -67,9 +68,9 @@ public interface VisionServiceClient {
 
     public OCR recognizeText(InputStream stream, String languageCode, boolean detectOrientation) throws VisionServiceException, IOException;
 
-    public TextRecognitionOperation createTextRecognitionOperationAsync(String url, String mode) throws  VisionServiceException;
+    public TextRecognitionOperation createTextRecognitionOperationAsync(String url, TextRecognitionMode mode) throws  VisionServiceException;
 
-    public TextRecognitionOperation createTextRecognitionOperationAsync(InputStream stream, String mode) throws VisionServiceException, IOException;
+    public TextRecognitionOperation createTextRecognitionOperationAsync(InputStream stream, TextRecognitionMode mode) throws VisionServiceException, IOException;
 
     public TextRecognitionOperationResult getTextRecognitionOperationResultAsync(String uri) throws  VisionServiceException;
 
