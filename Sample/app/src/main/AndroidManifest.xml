@@ -64,8 +64,8 @@
                 android:value="com.microsoft.projectoxford.visionsample.MainActivity" />
         </activity>
         <activity
-            android:name=".HandwritingRecognizeActivity"
-            android:label="@string/title_activity_handwriting_recognize"
+            android:name=".OneOCRRecognizeActivity"
+            android:label="@string/title_activity_oneocr_recognize"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

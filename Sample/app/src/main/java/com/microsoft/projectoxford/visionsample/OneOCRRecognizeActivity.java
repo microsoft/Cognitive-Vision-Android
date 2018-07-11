@@ -45,14 +45,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
-import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperation;
-import com.microsoft.projectoxford.vision.contract.HandwritingRecognitionOperationResult;
-import com.microsoft.projectoxford.vision.contract.HandwritingTextLine;
-import com.microsoft.projectoxford.vision.contract.HandwritingTextWord;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionMode;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionOperation;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionOperationResult;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionLine;
+import com.microsoft.projectoxford.vision.contract.TextRecognitionWord;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
 import com.microsoft.projectoxford.visionsample.helper.ImageHelper;
 
@@ -61,7 +64,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-public class HandwritingRecognizeActivity extends ActionBarActivity {
+public class OneOCRRecognizeActivity extends ActionBarActivity {
 
     // Flag to indicate which task is to be performed.
     private static final int REQUEST_SELECT_IMAGE = 0;
@@ -69,8 +72,23 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
     // The button to select an image
     private Button buttonSelectImage;
 
+    // The radio button to select mode
+    private RadioGroup groupSelectMode;
+
+    // Handwritten mode
+    private RadioButton buttonHandwritten;
+
+    // Printed mode
+    private RadioButton buttonPrinted;
+
+    // The button to send an image.
+    private Button buttonSend;
+
     // The URI of the image selected to detect.
     private Uri imagUrl;
+
+    // The mode selected for recognition, default printed.
+    private TextRecognitionMode mode = TextRecognitionMode.Printed;
 
     // The image selected to detect.
     private Bitmap bitmap;
@@ -86,20 +104,37 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recognize_handwriting);
+        setContentView(R.layout.activity_recognize_oneocr);
 
         if (client == null) {
             client = new VisionServiceRestClient(getString(R.string.subscription_key), getString(R.string.subscription_apiroot));
         }
 
         buttonSelectImage = (Button) findViewById(R.id.buttonSelectImage);
+        groupSelectMode = (RadioGroup) findViewById(R.id.groupSelectMode);
+        buttonHandwritten = (RadioButton) findViewById(R.id.buttonHandwritten);
+        buttonPrinted = (RadioButton) findViewById(R.id.buttonPrinted);
+        buttonSend = (Button) findViewById(R.id.buttonSend);
         editText = (EditText) findViewById(R.id.editTextResult);
+
+        groupSelectMode.setOnCheckedChangeListener(changeRadio);
     }
+
+    private RadioGroup.OnCheckedChangeListener changeRadio = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (checkedId == buttonHandwritten.getId()) {
+                mode = TextRecognitionMode.Handwritten;
+            } else if (checkedId == buttonPrinted.getId()) {
+                mode = TextRecognitionMode.Printed;
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_recognize, menu);
+        getMenuInflater().inflate(R.menu.menu_recognize_oneocr, menu);
         return true;
     }
 
@@ -123,8 +158,13 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         editText.setText("");
 
         Intent intent;
-        intent = new Intent(HandwritingRecognizeActivity.this, com.microsoft.projectoxford.visionsample.helper.SelectImageActivity.class);
+        intent = new Intent(OneOCRRecognizeActivity.this, com.microsoft.projectoxford.visionsample.helper.SelectImageActivity.class);
         startActivityForResult(intent, REQUEST_SELECT_IMAGE);
+    }
+
+    public void sendImage(View view)
+    {
+        doRecognize();
     }
 
     // Called when image selection is done.
@@ -147,8 +187,6 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                         // Add detection log.
                         Log.d("AnalyzeActivity", "Image: " + imagUrl + " resized to " + bitmap.getWidth()
                                 + "x" + bitmap.getHeight());
-
-                        doRecognize();
                     }
                 }
                 break;
@@ -177,9 +215,10 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, output);
             try (ByteArrayInputStream inputStream = new ByteArrayInputStream(output.toByteArray())) {
                 //post image and got operation from API
-                HandwritingRecognitionOperation operation = this.client.createHandwritingRecognitionOperationAsync(inputStream);
+                Log.d("Mode", mode.toString());
+                TextRecognitionOperation operation = this.client.createTextRecognitionOperationAsync(inputStream, mode);
 
-                HandwritingRecognitionOperationResult operationResult;
+                TextRecognitionOperationResult operationResult;
                 //try to get recognition result until it finished.
 
                 int retryCount = 0;
@@ -188,7 +227,7 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                         throw new InterruptedException("Can't get result after retry in time.");
                     }
                     Thread.sleep(1000);
-                    operationResult = this.client.getHandwritingRecognitionOperationResultAsync(operation.Url());
+                    operationResult = this.client.getTextRecognitionOperationResultAsync(operation.Url());
                 }
                 while (operationResult.getStatus().equals("NotStarted") || operationResult.getStatus().equals("Running"));
 
@@ -210,10 +249,10 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
         // Store error message
         private Exception e = null;
 
-        private WeakReference<HandwritingRecognizeActivity> recognitionActivity;
+        private WeakReference<OneOCRRecognizeActivity> recognitionActivity;
 
-        public doRequest(HandwritingRecognizeActivity activity) {
-            recognitionActivity = new WeakReference<HandwritingRecognizeActivity>(activity);
+        public doRequest(OneOCRRecognizeActivity activity) {
+            recognitionActivity = new WeakReference<OneOCRRecognizeActivity>(activity);
         }
 
         @Override
@@ -242,15 +281,15 @@ public class HandwritingRecognizeActivity extends ActionBarActivity {
                 this.e = null;
             } else {
                 Gson gson = new Gson();
-                HandwritingRecognitionOperationResult r = gson.fromJson(data, HandwritingRecognitionOperationResult.class);
+                TextRecognitionOperationResult r = gson.fromJson(data, TextRecognitionOperationResult.class);
 
                 StringBuilder resultBuilder = new StringBuilder();
                 //if recognition result status is failed. display failed
                 if (r.getStatus().equals("Failed")) {
                     resultBuilder.append("Error: Recognition Failed");
                 } else {
-                    for (HandwritingTextLine line : r.getRecognitionResult().getLines()) {
-                        for (HandwritingTextWord word : line.getWords()) {
+                    for (TextRecognitionLine line : r.getRecognitionResult().getLines()) {
+                        for (TextRecognitionWord word : line.getWords()) {
                             resultBuilder.append(word.getText() + " ");
                         }
                         resultBuilder.append("\n");

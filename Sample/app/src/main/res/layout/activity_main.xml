@@ -47,7 +47,7 @@
         <Button
             android:layout_width="267dp"
             android:layout_height="wrap_content"
-            android:text="Recognize Handwriting Text"
+            android:text="OneOCR Recognize Text V2.0"
             android:id="@+id/button"
             android:layout_gravity="center_horizontal"
             android:onClick="activityHandwriting"
