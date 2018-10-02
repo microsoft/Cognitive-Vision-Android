@@ -59,8 +59,7 @@ Android OS must be Android 4.1 or higher (API Level 16 or higher)
 
 4.  In Android Studio, select menu "Build \> Make Project" to build the sample, and "Run" to launch this sample app.
 
-<img src="SampleScreenshots/SampleRunning1.png" width="50%"/>
-<img src="SampleScreenshots/SampleRunning2.png" width="50%"/>
+<img src="SampleScreenshots/SampleRunning1.png" width="50%"/>	<img src="SampleScreenshots/SampleRunning2.png" width="50%"/>
 
 ### Run the Sample
 In Android Studio, select menu "Run", and "Run app" to launch this sample app.
