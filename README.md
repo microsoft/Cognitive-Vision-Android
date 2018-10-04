@@ -17,7 +17,7 @@ dependencies {
     // Use the following line to include client library from Maven Central Repository
     // Change the version number from the search.maven.org result
     //
-    compile 'com.microsoft.projectoxford:vision:1.0.394'
+    implementation 'com.microsoft.projectoxford:vision:1.0.394'
 
     // Your other Dependencies...
 }
