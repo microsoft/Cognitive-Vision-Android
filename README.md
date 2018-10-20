@@ -1,8 +1,8 @@
 # Microsoft Computer Vision API: Android Client Library & Sample
-This repo contains the Android client library & sample for the Microsoft Computer Vision API, an offering within [Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services), formerly known as Project Oxford.
-* [Learn about the Computer Vision API](https://www.microsoft.com/cognitive-services/en-us/computer-vision-api)
-* [Read the documentation](https://www.microsoft.com/cognitive-services/en-us/computer-vision-api/documentation)
-* [Find more SDKs & Samples](https://www.microsoft.com/cognitive-services/en-us/SDK-Sample?api=computer%20vision)
+This repo contains the Android client library & sample for the Microsoft Computer Vision API, an offering within [Microsoft Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/), formerly known as Project Oxford.
+* [Learn about the Computer Vision API](https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/)
+* [Read the documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/)
+* [Find more SDKs & Samples](https://azure.microsoft.com/en-us/resources/samples/?api=computer%20vision&sort=0&term=computer+vision)
 
 ## The Client Library
 The client library is a thin Java client wrapper for the Computer Vision API.
@@ -48,7 +48,7 @@ This sample is an Android application to demonstrate the use of the Computer Vis
 Android OS must be Android 4.1 or higher (API Level 16 or higher)
 
 ### Build the Sample
-1. First, you must obtain a Computer Vision API key by [following the instructions on our website](<https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/>).
+1. First, you must obtain a Computer Vision API key by [following the instructions on our website](<https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/vision-api-how-to-topics/howtosubscribe/>).
 
 2.  Start Android Studio and open project from Vision \> Android \> Sample folder.
 
