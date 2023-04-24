@@ -33,22 +33,12 @@
 package com.microsoft.projectoxford.vision.contract;
 
 import java.util.ArrayList;
-import java.util.List;
-public class HandwritingTextLine {
 
-    private List<HandwritingTextWord> words; //words in the line
+public class TextRecognitionWord {
 
-    private String text; //text of text line
+    private String text; //text of the world
 
-    private ArrayList<Integer> boundingBox; //bouding box for whole text line, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
-
-    public List<HandwritingTextWord> getWords() {
-        return words;
-    }
-
-    public void setWords(List<HandwritingTextWord> words) {
-        this.words = words;
-    }
+    private ArrayList<Integer> boundingBox; //bouding box of the world in origin image, e.g. "boundingBox": [153,579,1310,550,1313,647,156,678].
 
     public String getText() {
         return text;
